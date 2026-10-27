@@ -49,7 +49,7 @@
     if (v >= 1) return v.toLocaleString('en-US', { maximumFractionDigits: 3 });
     return v.toLocaleString('en-US', { maximumSignificantDigits: 4 });
   }
-  function pct(v) { return (v >= 0 ? '+' : '') + v.toLocaleString('en-US', { maximumFractionDigits: v > 1000 || v < -1000 ? 0 : 1 }) + '%'; }
+  function pct(v) { return (v >= 0 ? '+' : '\u2212') + Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: Math.abs(v) > 1000 ? 0 : 1 }) + '%'; } function pctOld(v) { return (v >= 0 ? '+' : '') + v.toLocaleString('en-US', { maximumFractionDigits: v > 1000 || v < -1000 ? 0 : 1 }) + '%'; }
 
   // ---------- data ----------
   function getJson(url) {

@@ -1,4 +1,5 @@
 /* Layout: a receipt from the future. One form, one result panel, then plain explainers. */
+[hidden]{display:none!important}
 :root{
   --bg:#eef0f7; --surface:#ffffff; --fg:#141729; --muted:#5b6080; --line:#d8dbea;
   --accent:#3046ff; --accent-ink:#ffffff; --up:#0f8a55; --down:#d23c3c; --chip:#e4e7ff;
