@@ -16,7 +16,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4798121032462529" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../style.css?v=2">
 </head>
 <body>
 <header class="top"><div class="wrap">
@@ -49,7 +49,15 @@
     if (a >= 100) { o.maximumFractionDigits = 0; } else if (a >= 1) { o.minimumFractionDigits = 2; o.maximumFractionDigits = 2; } else if (a >= 0.01) { o.maximumFractionDigits = 4; } else { o.maximumSignificantDigits = 3; }
     return v.toLocaleString('en-US', o); }
   function load() {
-    fetch('https://www.bitstamp.net/api/v2/ticker/').then(function (r) { return r.json(); }).then(function (all) {
+    var getAll = fetch('https://www.bitstamp.net/api/v2/ticker/').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .catch(function () {
+        return Promise.all(COINS.map(function (c) {
+          return fetch('https://www.bitstamp.net/api/v2/ticker/' + c[0].toLowerCase() + 'usd/').then(function (r) { return r.json(); })
+            .then(function (t) { t.pair = c[0] + '/USD'; if (t.percent_change_24 == null) { var o = +(t.open_24 || t.open); t.percent_change_24 = o ? ((+t.last - o) / o * 100).toFixed(2) : '0'; } return t; })
+            .catch(function () { return null; });
+        })).then(function (list) { list = list.filter(Boolean); if (!list.length) throw 0; return list; });
+      });
+    getAll.then(function (all) {
       var by = {}; all.forEach(function (t) { by[t.pair] = t; });
       document.getElementById('board').innerHTML = COINS.map(function (c) {
         var t = by[c[0] + '/USD']; if (!t) return '';
