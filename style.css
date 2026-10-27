@@ -73,3 +73,33 @@ canvas{width:100%;max-width:100%;display:block}
 .post-page h1{max-width:none}
 .post-page h2{font:600 20px var(--display);margin:12px 0 0}
 .post-page p{margin:0}
+.brief-home{padding-block:8px 36px;display:grid;gap:14px}
+.brief-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.brief-head h2,.board-wrap h2{font:800 24px var(--display);margin:0}
+.brief-head a{font-weight:700;text-decoration:none}
+.post-list{display:grid;gap:0}
+.post-item{display:grid;gap:4px;padding-block:16px;border-top:1px solid var(--line)}
+.post-item:first-child{border-top:0;padding-top:0}
+.post-item time,.post time{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.post-item h3{margin:0;font-size:19px}
+.post-item h3 a{color:var(--fg);text-decoration:none}
+.post-item h3 a:hover{text-decoration:underline}
+.post-item p{margin:0;color:var(--muted);font-size:15px}
+.crumbs{font-size:14px;color:var(--muted)}
+.post{display:grid;gap:14px;max-width:70ch}
+.post h1{font:800 clamp(28px,4.4vw,42px)/1.1 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.post h2{font:600 20px var(--display);margin:10px 0 0}
+.post p,.post li{margin:0}
+.post ul,.post ol{margin:0;padding-left:22px;display:grid;gap:6px}
+.back a{font-weight:700}
+.board-wrap{display:grid;gap:12px;padding-block:32px 8px}
+.board-scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.board{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+.board th,.board td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.board th:first-child,.board td:first-child{text-align:left}
+.board th{font:600 12px var(--body);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.board td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.board td:first-child{font-family:var(--body);font-weight:700}
+.board tr:last-child td{border-bottom:0}
+.board .up{color:var(--up)} .board .down{color:var(--down)}
+.board-note{color:var(--muted);font-size:13px;margin:0}

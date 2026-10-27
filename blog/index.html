@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Daily Crypto Brief | HODL Hindsight</title>
+<meta name="description" content="Live prices for Bitcoin, XRP, Ethereum, Solana and more, plus a short daily crypto market brief.">
+<meta property="og:title" content="Daily Crypto Brief | HODL Hindsight">
+<meta property="og:description" content="If you'd bought crypto back then, what would it be worth today? Run the numbers for BTC, XRP, ETH, SOL, DOGE and more.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://vtg0989-sudo.github.io/hodl-hindsight/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HODL Hindsight">
+<meta name="twitter:description" content="If you'd bought crypto back then, what would it be worth today?">
+<meta name="twitter:image" content="https://vtg0989-sudo.github.io/hodl-hindsight/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4798121032462529" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../">HODL<span>Hindsight</span></a>
+  <nav class="tabs"><a href="../#lump">What if</a><a href="../#dca">DCA</a><a href="../blog/">Daily Brief</a></nav>
+</div></header>
+<main class="wrap">
+  <section class="board-wrap">
+    <h2>Live prices</h2>
+    <div class="board-scroll"><table class="board">
+      <thead><tr><th>Coin</th><th>Price (USD)</th><th>24h change</th><th>24h low</th><th>24h high</th></tr></thead>
+      <tbody id="board"><tr><td colspan="5" style="text-align:left;color:var(--muted)">Loading prices…</td></tr></tbody>
+    </table></div>
+    <p class="board-note" id="board-note">Prices from Bitstamp. Refreshes every 60 seconds.</p>
+  </section>
+  <section class="brief-home" style="padding-top:24px">
+    <div class="brief-head"><h2>Daily Brief</h2></div>
+    <p style="margin:0;color:var(--muted)">A short read on what moved the crypto market each day. Information only, not financial advice.</p>
+    <div class="post-list">
+<!-- POSTS:START -->
+<article class="post-item"><time datetime="2026-10-26">Oct 26, 2026</time><h3><a href="2026-10-26-bitcoin-under-80k-ahead-of-fed.html">Bitcoin slips under $80K ahead of Wednesday&#x27;s Fed decision</a></h3><p>Traders cut risk before the Fed&#x27;s October 28 rate decision, while XRP Ledger activity hit a six-month high.</p></article>
+<!-- POSTS:END -->
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var COINS = [['BTC','Bitcoin'],['XRP','XRP'],['ETH','Ethereum'],['SOL','Solana'],['DOGE','Dogecoin'],['ADA','Cardano'],['LTC','Litecoin'],['LINK','Chainlink'],['XLM','Stellar'],['HBAR','Hedera'],['SHIB','Shiba Inu'],['AVAX','Avalanche'],['SUI','Sui'],['PEPE','Pepe']];
+  function usd(v) { var a = Math.abs(v); var o = { style: 'currency', currency: 'USD' };
+    if (a >= 100) { o.maximumFractionDigits = 0; } else if (a >= 1) { o.minimumFractionDigits = 2; o.maximumFractionDigits = 2; } else if (a >= 0.01) { o.maximumFractionDigits = 4; } else { o.maximumSignificantDigits = 3; }
+    return v.toLocaleString('en-US', o); }
+  function load() {
+    fetch('https://www.bitstamp.net/api/v2/ticker/').then(function (r) { return r.json(); }).then(function (all) {
+      var by = {}; all.forEach(function (t) { by[t.pair] = t; });
+      document.getElementById('board').innerHTML = COINS.map(function (c) {
+        var t = by[c[0] + '/USD']; if (!t) return '';
+        var ch = parseFloat(t.percent_change_24), cls = ch >= 0 ? 'up' : 'down';
+        return '<tr><td>' + c[1] + ' <span style="color:var(--muted);font-weight:400">' + c[0] + '</span></td><td>' + usd(+t.last) + '</td><td class="' + cls + '">' + (ch >= 0 ? '+' : '\u2212') + Math.abs(ch).toFixed(2) + '%</td><td>' + usd(+t.low) + '</td><td>' + usd(+t.high) + '</td></tr>';
+      }).join('');
+      document.getElementById('board-note').textContent = 'Prices from Bitstamp, updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '. Refreshes every 60 seconds.';
+    }).catch(function () { document.getElementById('board-note').textContent = 'Couldn\u2019t load live prices right now. They\u2019ll retry in a minute.'; });
+  }
+  load(); setInterval(load, 60000);
+})();
+</script>
+<footer class="foot"><div class="wrap">
+  <nav><a href="../">Calculator</a><a href="../blog/">Daily Brief</a><a href="https://vtg0989-sudo.github.io/">More sites &amp; tools</a><a href="../privacy.html">Privacy policy</a></nav>
+  <p>HODL Hindsight is an independent tool. Prices and briefs are for information only, not financial advice.</p>
+</div></footer>
+</body>
+</html>
