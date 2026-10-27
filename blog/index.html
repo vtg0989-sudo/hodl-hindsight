@@ -30,7 +30,7 @@
       <thead><tr><th>Coin</th><th>Price (USD)</th><th>24h change</th><th>24h low</th><th>24h high</th></tr></thead>
       <tbody id="board"><tr><td colspan="5" style="text-align:left;color:var(--muted)">Loading prices…</td></tr></tbody>
     </table></div>
-    <p class="board-note" id="board-note">Prices from Bitstamp. Refreshes every 60 seconds.</p>
+    <p class="board-note" id="board-note">Refreshes every 60 seconds.</p>
   </section>
   <section class="brief-home" style="padding-top:24px">
     <div class="brief-head"><h2>Daily Brief</h2></div>
@@ -49,22 +49,26 @@
     if (a >= 100) { o.maximumFractionDigits = 0; } else if (a >= 1) { o.minimumFractionDigits = 2; o.maximumFractionDigits = 2; } else if (a >= 0.01) { o.maximumFractionDigits = 4; } else { o.maximumSignificantDigits = 3; }
     return v.toLocaleString('en-US', o); }
   function load() {
-    var getAll = fetch('https://www.bitstamp.net/api/v2/ticker/').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    var CG = {BTC:'bitcoin',XRP:'ripple',ETH:'ethereum',SOL:'solana',DOGE:'dogecoin',ADA:'cardano',LTC:'litecoin',LINK:'chainlink',XLM:'stellar',HBAR:'hedera-hashgraph',SHIB:'shiba-inu',AVAX:'avalanche-2',SUI:'sui',PEPE:'pepe'};
+    var ids = COINS.map(function (c) { return CG[c[0]]; }).join(',');
+    var getAll = fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + ids).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (list) {
+        var back = {}; Object.keys(CG).forEach(function (k) { back[CG[k]] = k; });
+        return list.map(function (m) { return { pair: back[m.id] + '/USD', last: m.current_price, percent_change_24: m.price_change_percentage_24h, low: m.low_24h, high: m.high_24h, src: 'CoinGecko' }; });
+      })
       .catch(function () {
-        return Promise.all(COINS.map(function (c) {
-          return fetch('https://www.bitstamp.net/api/v2/ticker/' + c[0].toLowerCase() + 'usd/').then(function (r) { return r.json(); })
-            .then(function (t) { t.pair = c[0] + '/USD'; if (t.percent_change_24 == null) { var o = +(t.open_24 || t.open); t.percent_change_24 = o ? ((+t.last - o) / o * 100).toFixed(2) : '0'; } return t; })
-            .catch(function () { return null; });
-        })).then(function (list) { list = list.filter(Boolean); if (!list.length) throw 0; return list; });
+        return fetch('https://www.bitstamp.net/api/v2/ticker/').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+          .then(function (l) { l.forEach(function (t) { t.src = 'Bitstamp'; }); return l; });
       });
     getAll.then(function (all) {
       var by = {}; all.forEach(function (t) { by[t.pair] = t; });
       document.getElementById('board').innerHTML = COINS.map(function (c) {
-        var t = by[c[0] + '/USD']; if (!t) return '';
+        var t = by[c[0] + '/USD']; if (!t || t.last == null) return '';
         var ch = parseFloat(t.percent_change_24), cls = ch >= 0 ? 'up' : 'down';
         return '<tr><td>' + c[1] + ' <span style="color:var(--muted);font-weight:400">' + c[0] + '</span></td><td>' + usd(+t.last) + '</td><td class="' + cls + '">' + (ch >= 0 ? '+' : '\u2212') + Math.abs(ch).toFixed(2) + '%</td><td>' + usd(+t.low) + '</td><td>' + usd(+t.high) + '</td></tr>';
       }).join('');
-      document.getElementById('board-note').textContent = 'Prices from Bitstamp, updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '. Refreshes every 60 seconds.';
+      var src = (all[0] && all[0].src) || 'Bitstamp';
+      document.getElementById('board-note').textContent = 'Prices from ' + src + ', updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '. Refreshes every 60 seconds.';
     }).catch(function () { document.getElementById('board-note').textContent = 'Couldn\u2019t load live prices right now. They\u2019ll retry in a minute.'; });
   }
   load(); setInterval(load, 60000);

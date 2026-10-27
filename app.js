@@ -19,7 +19,8 @@
     { id: 'sui', sym: 'SUI', name: 'Sui', bs: 'suiusd', bsFrom: '2023-05-05' },
     { id: 'pepe', sym: 'PEPE', name: 'Pepe', bs: 'pepeusd', bsFrom: '2024-02-07' }
   ];
-  COINS.forEach(function (c) { c.from = c.cbFrom && c.cbFrom < c.bsFrom ? c.cbFrom : c.bsFrom; });
+  var CG = {"btc": "bitcoin", "xrp": "ripple", "eth": "ethereum", "sol": "solana", "doge": "dogecoin", "ada": "cardano", "ltc": "litecoin", "link": "chainlink", "xlm": "stellar", "hbar": "hedera-hashgraph", "shib": "shiba-inu", "avax": "avalanche-2", "sui": "sui", "pepe": "pepe"};
+  COINS.forEach(function (c) { c.from = c.cbFrom && c.cbFrom < c.bsFrom ? c.cbFrom : c.bsFrom; c.cg = CG[c.id]; });
   var byId = {}; COINS.forEach(function (c) { byId[c.id] = c; });
 
   var $ = function (id) { return document.getElementById(id); };
@@ -100,7 +101,8 @@
   }
   function livePrice(c) {
     return getJson('https://www.bitstamp.net/api/v2/ticker/' + c.bs + '/').then(function (j) { return +j.last; })
-      .catch(function () { return c.cb ? getJson('https://api.exchange.coinbase.com/products/' + c.cb + '/ticker').then(function (j) { return +j.price; }) : null; })
+      .catch(function () { return c.cb ? getJson('https://api.exchange.coinbase.com/products/' + c.cb + '/ticker').then(function (j) { return +j.price; }) : Promise.reject(); })
+      .catch(function () { return getJson('https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=' + c.cg).then(function (j) { return +j[c.cg].usd; }); })
       .catch(function () { return null; });
   }
   function indexOnOrAfter(days, ts) {
