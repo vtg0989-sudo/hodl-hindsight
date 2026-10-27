@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HODL Hindsight</title>
+<meta name="description" content="What would your crypto be worth today? Free what-if and DCA calculators for Bitcoin, XRP, Ethereum, Solana, Dogecoin and more, using real daily price history.">
+<meta property="og:title" content="HODL Hindsight">
+<meta property="og:description" content="If you'd bought crypto back then, what would it be worth today? Run the numbers for BTC, XRP, ETH, SOL, DOGE and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vtg0989-sudo.github.io/hodl-hindsight/">
+<meta property="og:image" content="https://vtg0989-sudo.github.io/hodl-hindsight/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HODL Hindsight">
+<meta name="twitter:description" content="If you'd bought crypto back then, what would it be worth today?">
+<meta name="twitter:image" content="https://vtg0989-sudo.github.io/hodl-hindsight/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4798121032462529" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./">HODL<span>Hindsight</span></a>
+  <nav class="tabs" role="tablist">
+    <a href="#lump" role="tab" id="tab-lump">What if</a>
+    <a href="#dca" role="tab" id="tab-dca">DCA</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 id="headline">If you'd bought back then, what would it be worth today?</h1>
+    <p class="lede">Pick a coin, an amount and a date. The numbers use real daily closing prices, not estimates.</p>
+  </section>
+
+  <section class="calc">
+    <form id="form" class="panel" autocomplete="off">
+      <div class="field">
+        <label for="coin">Coin</label>
+        <select id="coin"></select>
+      </div>
+      <div class="field">
+        <label for="amount" id="amount-label">Amount invested (USD)</label>
+        <input id="amount" type="number" min="1" step="any" inputmode="decimal" value="1000">
+      </div>
+      <div class="field">
+        <label for="date" id="date-label">Date you bought</label>
+        <input id="date" type="date">
+        <small id="date-hint" class="hint"></small>
+      </div>
+      <div class="field" id="freq-field" hidden>
+        <label for="freq">How often</label>
+        <select id="freq">
+          <option value="7">Every week</option>
+          <option value="14">Every 2 weeks</option>
+          <option value="m" selected>Every month</option>
+          <option value="1">Every day</option>
+        </select>
+      </div>
+      <div class="presets" aria-label="Quick dates">
+        <button type="button" data-ago="1">1 yr ago</button>
+        <button type="button" data-ago="3">3 yrs</button>
+        <button type="button" data-ago="5">5 yrs</button>
+        <button type="button" data-ago="max">Earliest</button>
+      </div>
+      <button class="go" type="submit">Run the numbers</button>
+    </form>
+
+    <div class="result panel" id="result" aria-live="polite">
+      <p class="status" id="status">Loading prices…</p>
+      <div id="out" hidden>
+        <p class="say" id="say"></p>
+        <p class="big" id="big"></p>
+        <p class="delta" id="delta"></p>
+        <dl class="stats" id="stats"></dl>
+        <div class="chart-box">
+          <canvas id="chart" height="260" aria-label="Value over time chart" role="img"></canvas>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="share">
+          <a class="x" id="share-x" target="_blank" rel="noopener">Post this on X</a>
+          <button type="button" id="copy">Copy result</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="explain">
+    <div>
+      <h2>What-if vs. DCA</h2>
+      <p><strong>What if</strong> puts the whole amount in on one day and holds. It shows the best and worst of timing a single buy.</p>
+      <p><strong>DCA</strong> (dollar-cost averaging) buys the same dollar amount on a schedule, every week or month. It smooths out the price you pay, so you buy more coins when prices are low and fewer when they're high.</p>
+    </div>
+    <div>
+      <h2>How the numbers work</h2>
+      <p>Each buy uses that day's closing price in US dollars. Today's value uses the latest traded price. Trading fees, taxes and staking rewards aren't included, so real results would differ a little.</p>
+      <p>Price history comes from the public market data of Bitstamp and Coinbase. Some coins only have data from the date they were listed there.</p>
+    </div>
+    <div>
+      <h2>Not financial advice</h2>
+      <p>This tool shows what happened in the past. Past prices don't predict future ones, and crypto can drop fast. Only invest what you can afford to lose, and do your own research.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <nav><a href="https://vtg0989-sudo.github.io/">More sites &amp; tools</a><a href="privacy.html">Privacy policy</a></nav>
+  <p>HODL Hindsight is an independent tool. Prices are for information only and may be delayed.</p>
+</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
